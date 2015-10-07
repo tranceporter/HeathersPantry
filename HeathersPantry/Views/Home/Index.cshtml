@@ -1,0 +1,377 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Heather's Pantry</title>
+    <meta name="robots" content="NOINDEX,NOFOLLOW">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
+
+    @*<script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-681637-19']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>*@
+
+    <style>
+        html, body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .padding-15 {
+            padding: 15px;
+        }
+
+        .margin-10 {
+            margin-top: 15px;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .form-group.required .control-label:after {
+            color: #d00;
+            content: "*";
+            position: absolute;
+            margin-left: 8px;
+            top: 7px;
+        }
+
+        .loadmask {
+            z-index: 100;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            zoom: 1;
+            background: rgba(0,0,0,0.1);
+        }
+
+        .loadmask-msg {
+            z-index: 20001;
+            position: absolute;
+            top: 0;
+            left: 0;
+            line-height: 1; /* this enables us to center the label text relative to the spinner */
+        }
+
+        .masked {
+            overflow: hidden !important;
+        }
+
+        .masked-relative {
+            position: relative !important;
+        }
+
+        .masked-hidden {
+            visibility: hidden !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row text-center">
+            <img class="img-responsive" style="display:initial;" src="~/Content/Images/Logo.jpg" />
+        </div>
+        @*<div class="row text-center" style="background-color:#222;">
+                <div class="col-md-12 padding-15">
+                    <span style="color:#ffffff;">Your one stop shop to high standard cleaning and a quality service.</span>
+                </div>
+            </div>*@
+        <div class="row">
+            <img class="img-responsive" src="~/Content/Images/services-image.jpg" />
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="row margin-10 text-center">
+                    <img class="img-responsive" style="display:initial;" src="~/Content/Images/monacle.gif" />
+                </div>
+                <div class="row margin-10">
+                    <div class="col-xs-12">
+                        <p>Arrive to a home cleaned to your delight. We cater to an array of services that will guarantee your satisfaction every time. We understand with hectic schedules its not always easy to keep a tidy home. Let our team do the dirty work and make your life just a little neater. Our janitorial services include:</p>
+                        <ul>
+                            <li>Regular cleans</li>
+                            <li>Deep or Spring cleans</li>
+                            <li>Internal window cleaning</li>
+                            <li>End of tenancy</li>
+                            <li>Military march out</li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="row margin-10 text-center">
+                    <img class="img-responsive" style="display:initial;" src="~/Content/Images/brooms.gif" />
+                </div>
+                <div class="row margin-10">
+                    <div class="col-xs-12">
+                        <p>Our team is committed to providing you with the best service possible accompanied by the best products on the market.  Whether you&rsquo;re looking for the right product for your next big cleaning project or just wondering what we use while working around your house, just ask. We love what we do and would gladly help out in any way we can.</p>
+                        <p>We&rsquo;re proud to offer our clients with the option to use a wide variety of green, natural products in their home, which not only deliver superior performance in maintaining your home, but your health and the environment as well.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="row margin-10 text-center">
+                    <img class="img-responsive" style="display:initial;" src="~/Content/Images/shoes.gif" />
+                </div>
+                <div class="row margin-10">
+                    <div class="col-xs-12">
+                        <p>At Heather's Pantry we like to provide our clients with a wide variety of help to assist you in and around your home such as:</p>
+                        <ul>
+                            <li>Ironing service</li>
+                            <li>Carpet Cleaning</li>
+                            <li>Our own cleaning equipment and products</li>
+                            <li>Catering Services</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 padding-15">
+                <form class="form-horizontal" id="formContainer" role="form">
+                    <div id="inputDiv">
+                        <div class="form-group">
+                            <label for="name" class="col-sm-2 control-label">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="First & Last Name" value="" autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label for="email" class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="email" name="email" placeholder="example@domain.com" value="" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="col-sm-2 control-label">Phone</label>
+                            <div class="col-sm-10">
+                                <input type="tel" class="form-control" id="phone" name="phone" placeholder="0123456789" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="message" class="col-sm-2 control-label">Message</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" rows="6" name="message" id="message" placeholder="Please enter your message"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-right:0;">
+                        <div class="pull-right">
+                            <input id="send" name="send" type="submit" value="Send" class="btn btn-success">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-8 padding-15">
+                <div id="mapCanvas" style="width: auto; height: 280px"></div>
+            </div>
+        </div>
+    </div>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.11.3.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
+    <script src="http://cdn.rawgit.com/iloveitaly/jquery.loadmask.spin/master/jquery.loadmask.spin.js"></script>
+    <script>
+        function initialize() {
+            var mapOptions = {
+                center: new google.maps.LatLng(51.552559, -1.775779),
+                zoom: 15,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+            };
+
+            var map = new google.maps.Map(document.getElementById("mapCanvas"), mapOptions);
+
+            var request = {
+                placeId: 'ChIJ0S7-I1JEcUgR7SxBGp1Gcwg'
+            };
+
+            var infowindow = new google.maps.InfoWindow();
+            var service = new google.maps.places.PlacesService(map);
+
+            service.getDetails(request, function (place, status) {
+                if (status == google.maps.places.PlacesServiceStatus.OK) {
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: place.geometry.location
+                    });
+                    google.maps.event.addListener(marker, 'click', function () {
+                        var displayContent = "Heather's Pantry" + '<br/>' + place.formatted_address;
+                        infowindow.setContent(displayContent);
+                        infowindow.open(map, this);
+                    });
+                }
+            });
+        }
+
+        window.onload = function () {
+            initialize();
+        }
+    </script>
+</body>
+
+</html>
+
+@*<body>
+            <div class="white">
+                <header class="site">
+                    <h1>The Dapper Janitor</h1>
+                </header>
+            </div>
+            <div class="site vcard">
+                <span class="fn">The Dapper Janitor</span>
+                <span class="adr">
+                    <span class="street-address">6232 AIRPARK DRIVE</span> &nbsp;&bull;&nbsp;
+                    <span class="locality">CHATTANOOGA</span>,
+                    <span class="region" title="Tennessee">TN</span>,
+                    <span class="postal-code">37421</span> &nbsp;&bull;&nbsp;
+                </span>
+                <span class="tel">
+                    <span class="type">Work</span> <span class="value">423</span>.<span class="value">954</span>.<span class="value">9751</span>
+                </span>
+                </span>
+            </div>
+            <div class="white">
+                <section class="services" id="services">
+                    <a name="services"></a>
+                    <header>
+                        <h1>So Fresh. So Clean. The Dapper Janitor is at your service.</h1>
+                    </header>
+                    <ul class="columns cf">
+                        <li class="monacle">
+                            <div class="adjust">
+                                <hr>
+
+                                <p>Arrive to a home cleaned to your delight. We cater to an array of services that will guarantee your satisfaction every time. We understand with hectic schedules its not always easy to keep a tidy home. Let our team do the dirty work and make your life just a little neater. Our janitorial services include:</p>
+
+                                <ul>
+                                    <li>Spring Cleaning</li>
+                                    <li>Post Construction Clean Up</li>
+                                    <li>Garage / Deck / Patio</li>
+                                    <li>Oven /Refrigerator</li>
+                                    <li>Rugs / Carpets / Upholstery</li>
+                                    <li>Tile / Grout</li>
+                                    <li>Windows / Blinds / Chandeliers</li>
+                                </ul>
+
+                            </div>
+                        </li>
+                        <li class="brooms">
+                            <div class="adjust">
+                                <hr>
+
+                                <p>Our team is committed to providing you with the best service possible accompanied by the best products on the market.  Whether you&rsquo;re looking for the right product for your next big cleaning project or just wondering what we use while working around your house, just ask. We love what we do and would gladly help out in any way we can.</p>
+
+                                <p>We&rsquo;re proud to offer our clients with the option to use a wide variety of green, natural products in their home, which not only deliver superior performance in maintaining your home, but your health and the environment as well.</p>
+
+
+                            </div>
+                        </li>
+                        <li class="shoes">
+                            <div class="adjust">
+                                <hr>
+
+                                <p>At the Dapper Janitor we like to provide our clients with a wide variety of help to assist you in and around your home such as:</p>
+
+                                <ul>
+                                    <li>Laundry (washing and folding)</li>
+                                <li>Ironing</li>
+                                <li>Dry-cleaning (pick up & drop off)</li>
+                                <li>Flowers ( fresh, pick up & delivery)</li>
+                                <li>Running errands</li>
+                                <li>Packing and unpacking</li>
+                            </ul>
+
+                            <p>You name it and we&rsquo;ll try our very best to make life a little easier for you. Our team is at your service.</p>
+
+                        </div>
+                    </li>
+                </ul>
+            </section>
+            <a name="contact"></a>
+            <section class="contact cf" id="contact">
+                <div class="wrapper">
+                    <div class="opaque-white">
+                        <div class="adjust">
+
+                            <h1>Life is busy. Let us help.</h1>
+                            <p>Our team of professionals will take care of you and your home just the way you like it. We&rsquo;re so sure that you will love what we have to offer that we&rsquo;d like to give you a complementary in-home estimate on us!</p>
+
+                        </div>
+                    </div>
+                    <div class="opaque-white">
+                        <div class="adjust cf">
+
+                            <div class="vcard">
+                                <p>
+                                    <span class="fn">The Dapper Janitor</span><br>
+                                    <span class="adr">
+                                        <span class="street-address">6232 Airpark Drive</span><br>
+                                        <span class="locality">Chattanooga</span>,
+                                        <span class="region" title="Tennessee">TN</span>,
+                                        <span class="postal-code">37421</span>
+                                    </span>
+                                </p>
+                                <p>
+                                    <span class="tel"><span class="type">WORK</span>: <span type="value">423</span>.<span type="value">954</span>.<span type="value">9751</span></span><br>
+                                    <span class="tel"><span class="type">FAX</span>: <span type="value">423</span>.<span type="value">894</span>.<span type="value">0152</span></span>
+                                </p>
+                                <p>
+                                    <a class="email" href="mailto:info@thedapperjanitor.com">info@thedapperjanitor.com</a>
+                                </p>
+                            </div>
+
+                            <form action="#contact-form" method="post" id="contact-form" class="contact-form">
+                                <a name="contact-form"></a>
+                                <p>
+                                    <div class="input-wrapper cf">
+                                        <label for="name">Name</label>
+                                        <input tabindex="1" type="text" name="name" id="name" value="" placeholder="Name">
+                                    </div>
+                                </p>
+                                <p>
+                                    <div class="input-wrapper cf">
+                                        <label for="email">Email Address</label>
+                                        <input tabindex="2" type="email" name="email" id="email" value="" placeholder="Email Address">
+                                    </div>
+                                </p>
+                                <p>
+                                    <div class="input-wrapper cf">
+                                        <label for="message">Message</label>
+                                        <textarea tabindex="3" name="message" id="message" placeholder="Message"></textarea>
+                                    </div>
+                                </p>
+                                <p class="cf">
+                                    <input class="button" tabindex="4" type="submit" name="submit" value="Submit">
+                                </p>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <footer class="site cf">
+            <p class="copyright">&copy; The Dapper Janitor | 2015</p>
+            <nav class="site">
+                <ul class="cf">
+                    <li><a class="home" href="#home">Home</a></li>
+                    <li><a class="services" href="#services">Dapper Services</a></li>
+                    <li><a class="contact" href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </footer>
+    </body>*@
